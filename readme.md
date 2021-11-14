@@ -14,11 +14,17 @@
 $ npm install imagemin
 ```
 
+## Warning
+
+This repo is only for development purposes and not intended to be used in production enviroments
+
+This is a experiment and may not work at all. (Plugins currently do not work at all)
+
 ## Usage
 
 ```js
 const imagemin = require('imagemin');
-const imageminJpegtran = require(imagemin-jpegtran');
+const imageminJpegtran = require('imagemin-jpegtran');
 const imageminPngquant = require('imagemin-pngquant');
 
 const files = await imagemin(['images/*.{jpg,png}'], {
