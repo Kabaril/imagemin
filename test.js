@@ -7,7 +7,7 @@ const imageminSvgo = require('imagemin-svgo');
 const isJpg = require('is-jpg');
 const tempy = require('tempy');
 const test = require('ava');
-const imagemin = require('./index.js');
+const imagemin = require('./index.js').imagemin;
 
 const fsPromises = fs.promises;
 

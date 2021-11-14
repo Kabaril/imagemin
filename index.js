@@ -76,4 +76,4 @@ imagemin.buffer = async (input, {plugins = []} = {}) => {
 	return plugins.reduce(async (previous, current) => await current(previous), input);
 };
 
-module.exports = imagemin;
+exports.imagemin = imagemin;
