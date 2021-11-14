@@ -1,14 +1,13 @@
-import {Buffer} from 'node:buffer';
-import {promises as fsPromises} from 'node:fs';
-import {promisify} from 'node:util';
-import path from 'node:path';
-import fs from 'graceful-fs';
-import FileType from 'file-type';
-import {globby} from 'globby';
-import pPipe from 'p-pipe';
-import replaceExt from 'replace-ext';
-import junk from 'junk';
-import convertToUnixPath from 'slash';
+const Buffer = require('buffer').Buffer;
+const promisify = require('util').promisify;
+const path = require('path');
+const fs = require('fs');
+const fsPromises = fs.promises;
+const FileType = require('file-type');
+const fg = require('fast-glob');
+const replaceExt = require('replace-ext');
+const junk = require('junk');
+const convertToUnixPath = require('slash');
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -19,7 +18,9 @@ const handleFile = async (sourcePath, {destination, plugins = []}) => {
 	}
 
 	let data = await readFile(sourcePath);
-	data = await (plugins.length > 0 ? pPipe(...plugins)(data) : data);
+	if (plugins.length > 0) {
+		data = await plugins.reduce(async (previous, current) => await current(previous), data);
+	}
 
 	const {ext} = await FileType.fromBuffer(data) || {ext: path.extname(sourcePath)};
 	let destinationPath = destination ? path.join(destination, path.basename(sourcePath)) : undefined;
@@ -41,13 +42,13 @@ const handleFile = async (sourcePath, {destination, plugins = []}) => {
 	return returnValue;
 };
 
-export default async function imagemin(input, {glob = true, ...options} = {}) {
+async function imagemin(input, {glob = true, ...options} = {}) {
 	if (!Array.isArray(input)) {
 		throw new TypeError(`Expected an \`Array\`, got \`${typeof input}\``);
 	}
 
 	const unixFilePaths = input.map(path => convertToUnixPath(path));
-	const filePaths = glob ? await globby(unixFilePaths, {onlyFiles: true}) : input;
+	const filePaths = glob ? await fg(unixFilePaths, {onlyFiles: true}) : input;
 
 	return Promise.all(
 		filePaths
@@ -72,5 +73,7 @@ imagemin.buffer = async (input, {plugins = []} = {}) => {
 		return input;
 	}
 
-	return pPipe(...plugins)(input);
+	return plugins.reduce(async (previous, current) => await current(previous), input);
 };
+
+exports.imagemin = imagemin;

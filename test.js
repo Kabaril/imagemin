@@ -1,16 +1,15 @@
-import fs, {promises as fsPromises} from 'node:fs';
-import path from 'node:path';
-import {fileURLToPath} from 'node:url';
-import del from 'del';
-import imageminJpegtran from 'imagemin-jpegtran';
-import imageminWebp from 'imagemin-webp';
-import imageminSvgo from 'imagemin-svgo';
-import isJpg from 'is-jpg';
-import tempy from 'tempy';
-import test from 'ava';
-import imagemin from './index.js';
+const fs = require('fs');
+const path = require('path');
+const del = require('del');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminWebp = require('imagemin-webp');
+const imageminSvgo = require('imagemin-svgo');
+const isJpg = require('is-jpg');
+const tempy = require('tempy');
+const test = require('ava');
+const imagemin = require('./index.js').imagemin;
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const fsPromises = fs.promises;
 
 test('optimize a file', async t => {
 	const buffer = await fsPromises.readFile(path.join(__dirname, 'fixture.jpg'));
