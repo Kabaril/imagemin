@@ -2,43 +2,26 @@
 
 > Minify images seamlessly using commonjs modules
 
-<br>
-
----
 
 <br>
-
-## Install
-
-```
-$ npm install imagemin
-```
 
 ## Warning
 
-This repo is only for development purposes and not intended to be used in production enviroments
-
-This is a experiment and may not work at all. (Plugins currently do not work at all)
+This repo is only for development purposes and not intended to be used in production enviroments.
 
 ## Usage
 
 ```js
 const imagemin = require('imagemin');
-const imageminJpegtran = require('imagemin-jpegtran');
-const imageminPngquant = require('imagemin-pngquant');
+const imageminSvgo = require('imagemin-svgo');
 
-const files = await imagemin(['images/*.{jpg,png}'], {
+const files = await imagemin(['images/*.{svg}'], {
 	destination: 'build/images',
 	plugins: [
-		imageminJpegtran(),
-		imageminPngquant({
-			quality: [0.6, 0.8]
-		})
+		imageminSvgo(),
 	]
 });
 
-console.log(files);
-//=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
 ```
 
 ## API
