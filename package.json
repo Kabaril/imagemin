@@ -45,7 +45,6 @@
 		"file-type": "^16.5.3",
 		"graceful-fs": "^4.2.8",
 		"junk": "^3.1.0",
-		"p-pipe": "^4.0.0",
 		"replace-ext": "^2.0.0",
 		"slash": "^3.0.0"
 	},
@@ -53,10 +52,10 @@
 		"ava": "^3.15.0",
 		"del": "^6.0.0",
 		"imagemin-jpegtran": "^7.0.0",
-		"imagemin-svgo": "^9.0.0",
+		"imagemin-svgo": "https://github.com/Kabaril/imagemin-svgo.git",
 		"imagemin-webp": "^6.0.0",
 		"is-jpg": "^2.0.0",
 		"tempy": "^1.0.1",
-		"xo": "^0.43.0"
+		"xo": "^0.45.0"
 	}
 }
