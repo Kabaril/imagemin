@@ -1,14 +1,14 @@
-const Buffer = require('buffer').Buffer;
-const promisify = require('util').promisify;
+const {Buffer} = require('buffer');
+const {promisify} = require('util');
 const path = require('path');
-const fs = require('fs');
-const fsPromises = fs.promises;
+const fs = require('graceful-fs');
 const FileType = require('file-type');
 const fg = require('fast-glob');
 const replaceExt = require('replace-ext');
 const junk = require('junk');
 const convertToUnixPath = require('slash');
 
+const fsPromises = fs.promises;
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
@@ -19,7 +19,7 @@ const handleFile = async (sourcePath, {destination, plugins = []}) => {
 
 	let data = await readFile(sourcePath);
 	if (plugins.length > 0) {
-		data = await plugins.reduce(async (previous, current) => await current(previous), data);
+		data = await plugins.reduce(async (previous, current) => current(previous), data);
 	}
 
 	const {ext} = await FileType.fromBuffer(data) || {ext: path.extname(sourcePath)};
@@ -73,7 +73,7 @@ imagemin.buffer = async (input, {plugins = []} = {}) => {
 		return input;
 	}
 
-	return plugins.reduce(async (previous, current) => await current(previous), input);
+	return plugins.reduce(async (previous, current) => current(previous), input);
 };
 
 module.exports = imagemin;

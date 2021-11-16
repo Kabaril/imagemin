@@ -20,10 +20,7 @@
 	"xo": {
 		"rules": {
 			"unicorn/prefer-module": 0,
-			"prefer-destructuring": 0,
-			"import/newline-after-import": 0,
-			"unicorn/no-array-reduce": 0,
-			"no-return-await": 0
+			"unicorn/no-array-reduce": 0
 		}
 	},
 	"files": [
